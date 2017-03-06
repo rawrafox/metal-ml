@@ -149,7 +149,7 @@ module NSArray = struct
   let alloc () = new t (ObjC.alloc ns_array_class)
   let nil () = new t (ObjC.nil)
 
-  let array = (alloc ())#init
+  let array () = (alloc ())#init
 end
 
 module NSCoder = struct
@@ -173,7 +173,7 @@ module NSDictionary = struct
   let alloc () = new t (ObjC.alloc ns_dictionary_class)
   let nil () = new t (ObjC.nil)
 
-  let dictionary = (alloc ())#init
+  let dictionary () = (alloc ())#init
 end
 
 module NSError = struct
@@ -199,7 +199,7 @@ module NSString = struct
   let alloc () = new t (ObjC.alloc ns_string_class)
   let nil () = new t (ObjC.nil)
 
-  let string = (alloc ())#init
+  let string () = (alloc ())#init
   let new_with_bytes_length_encoding bytes len encoding = (alloc ())#init_with_bytes_length_encoding bytes len encoding
   let new_with_utf8_string null_terminated_c_string = (alloc ())#init_with_utf8_string null_terminated_c_string
 end

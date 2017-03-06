@@ -142,7 +142,7 @@ module Bridge
 
         o.blast(self.children.map { |c| c.to_ocaml_implementation }.compact, prefix: "class ", join: " and ", pad: true)
       end
-      
+
       o.puts("open Implementation", pad: true)
       o.puts("open Implementation.Extern")
 
@@ -185,7 +185,8 @@ module Bridge
       pad = true
       children.select { |x| x.is_a? Initializer }.each do |initializer|
         arguments = initializer.arguments.map { |a| " #{a.name}"}.join
-        o.puts("let #{initializer.static_name}#{arguments} = (alloc ())##{initializer.name}#{arguments}", pad: pad)
+
+        o.puts("let #{initializer.static_name}#{arguments == "" ? " ()" : arguments} = (alloc ())##{initializer.name}#{arguments}", pad: pad)
         pad = false
       end
     end

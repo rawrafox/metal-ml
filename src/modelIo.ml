@@ -439,7 +439,7 @@ module MDLAsset = struct
   let alloc () = new t (ObjC.alloc mdl_asset_class)
   let nil () = new t (ObjC.nil)
 
-  let asset = (alloc ())#init
+  let asset () = (alloc ())#init
   let new_with_url url = (alloc ())#init_with_url url
   let new_with_url_vertex_descriptor_buffer_allocator url vertex_descriptor buffer_allocator = (alloc ())#init_with_url_vertex_descriptor_buffer_allocator url vertex_descriptor buffer_allocator
 end
@@ -451,7 +451,7 @@ module MDLCamera = struct
   let alloc () = new t (ObjC.alloc mdl_camera_class)
   let nil () = new t (ObjC.nil)
 
-  let camera = (alloc ())#init
+  let camera () = (alloc ())#init
 end
 
 module MDLCheckerboardTexture = struct
@@ -698,7 +698,7 @@ module MDLVertexDescriptor = struct
   let alloc () = new t (ObjC.alloc mdl_vertex_descriptor_class)
   let nil () = new t (ObjC.nil)
 
-  let vertex_descriptor = (alloc ())#init
+  let vertex_descriptor () = (alloc ())#init
   let new_with_vertex_descriptor vertex_descriptor = (alloc ())#init_with_vertex_descriptor vertex_descriptor
 end
 

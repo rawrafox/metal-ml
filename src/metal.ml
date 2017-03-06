@@ -430,6 +430,7 @@ module Implementation = struct
 
     let mtl_vertex_descriptor_class = ObjC.get_class "MTLVertexDescriptor"
     let mtl_buffer_contents = ObjC.message_send "contents" (returning (ptr void))
+    let mtl_buffer_did_modify_range = ObjC.message_send "didModifyRange:" (ns_range @-> returning void)
     let mtl_buffer_get_length = ObjC.message_send "length" (returning nsu_integer)
     let mtl_buffer_set_length = ObjC.message_send "setLength:" (nsu_integer @-> returning void)
     let mtl_buffer_remove_all_debug_markers = ObjC.message_send "removeAllDebugMarkers" (returning void)
@@ -745,6 +746,7 @@ module Implementation = struct
   end and mtl_buffer (ptr: ObjC.id) = object (self)
     inherit mtl_resource ptr
     method contents = mtl_buffer_contents ptr
+    method did_modify_range range = mtl_buffer_did_modify_range ptr range
     method length = mtl_buffer_get_length ptr
     method remove_all_debug_markers = mtl_buffer_remove_all_debug_markers ptr
   end and mtl_command_buffer (ptr: ObjC.id) = object (self)
@@ -1318,7 +1320,7 @@ module MTLDepthStencilDescriptor = struct
   let alloc () = new t (ObjC.alloc mtl_depth_stencil_descriptor_class)
   let nil () = new t (ObjC.nil)
 
-  let depth_stencil_descriptor = (alloc ())#init
+  let depth_stencil_descriptor () = (alloc ())#init
 end
 
 module MTLFunctionConstant = struct
@@ -1416,7 +1418,7 @@ module MTLRenderPipelineDescriptor = struct
   let alloc () = new t (ObjC.alloc mtl_render_pipeline_descriptor_class)
   let nil () = new t (ObjC.nil)
 
-  let render_pipeline_descriptor = (alloc ())#init
+  let render_pipeline_descriptor () = (alloc ())#init
 end
 
 module MTLRenderPipelineReflection = struct
@@ -1434,7 +1436,7 @@ module MTLSamplerDescriptor = struct
   let alloc () = new t (ObjC.alloc mtl_sampler_descriptor_class)
   let nil () = new t (ObjC.nil)
 
-  let sampler_descriptor = (alloc ())#init
+  let sampler_descriptor () = (alloc ())#init
 end
 
 module MTLStageInputOutputDescriptor = struct
@@ -1476,7 +1478,7 @@ module MTLTextureDescriptor = struct
   let alloc () = new t (ObjC.alloc mtl_texture_descriptor_class)
   let nil () = new t (ObjC.nil)
 
-  let texture_descriptor = (alloc ())#init
+  let texture_descriptor () = (alloc ())#init
 end
 
 module MTLVertexAttribute = struct

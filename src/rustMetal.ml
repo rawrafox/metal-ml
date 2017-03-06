@@ -54,5 +54,5 @@ module RSMWindowDelegate = struct
   let alloc () = new t (ObjC.alloc rsm_window_delegate_class)
   let nil () = new t (ObjC.nil)
 
-  let window_delegate = (alloc ())#init
+  let window_delegate () = (alloc ())#init
 end

@@ -983,11 +983,9 @@
     </method>
 
     <!-- Invalidating the Buffer’s Storage -->
-    <!-- TODO: Fix NSRange
     <method selector="didModifyRange:">
       <argument name="range" type="NSRange" />
     </method>
-    -->
 
     <!-- Properties -->
     <property name="length" type="NSUInteger" read-only />
