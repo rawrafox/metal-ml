@@ -27,15 +27,7 @@ let add_method_ffi = foreign "class_addMethod" (id @-> selector @-> implementati
 let add_method klass op imp signature encoded_signature = add_method_ffi klass (register_name op) (coerce (Foreign.funptr signature) implementation imp) encoded_signature
 
 let get_ivar_ffi = foreign "object_getInstanceVariable" (id @-> string @-> ptr void @-> returning void)
-let get_ivar self name t v =
-  let rv = allocate t v in
-  get_ivar_ffi self#get_id name (to_voidp rv);
-  !@ rv
-
-let get_obj_ivar self name =
-  get_ivar self name id nil
-
-let set_ivar = foreign "object_setInstanceVariable" (id @-> string @-> ptr void @-> returning void)
+let set_ivar_ffi = foreign "object_setInstanceVariable" (id @-> string @-> ptr void @-> returning void)
 
 let alloc = message_send "alloc" (returning id)
 let retain = message_send "retain" (returning id)
@@ -47,13 +39,15 @@ module Object = struct
     val ptr = ptr
 
     method get_id = ptr
-    
-    method retain =
-      let _ = retain ptr in
-      self
 
+    method get_ivar name t v = let rv = allocate t v in get_ivar_ffi ptr name (to_voidp rv); !@ rv
+    method set_ivar name v = set_ivar_ffi ptr name (to_voidp v)
+
+    method get_object_ivar name = self#get_ivar name id nil
+    method set_object_ivar name (v : t) = self#set_ivar name v#get_id
+
+    method retain = let _ = retain ptr in self
     method release = release ptr
-
     method retain_count = retain_count ptr
   end
 end

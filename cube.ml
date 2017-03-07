@@ -98,12 +98,12 @@ let content_rect = CGRect.make (CGPoint.make 100.0 300.0) (CGSize.make 600.0 600
 
 let draw_rect (self : ObjC.id) (_ : ObjC.selector) (_ : CGRect.t) =
   let view = new MTKView.t self in
-  let vertex_buffer = new MTLBuffer.t (ObjC.get_obj_ivar view "vertex_buffer") in
-  let index_buffer = new MTLBuffer.t (ObjC.get_obj_ivar view "index_buffer") in
-  let uniform_buffer = new MTLBuffer.t (ObjC.get_obj_ivar view "uniform_buffer") in
-  let command_queue = new MTLCommandQueue.t (ObjC.get_obj_ivar view "command_queue") in
-  let depth_stencil_state = new MTLDepthStencilState.t (ObjC.get_obj_ivar view "depth_stencil_state") in
-  let pipeline_state = new MTLRenderPipelineState.t (ObjC.get_obj_ivar view "pipeline_state") in
+  let vertex_buffer = new MTLBuffer.t (view#get_object_ivar "vertex_buffer") in
+  let index_buffer = new MTLBuffer.t (view#get_object_ivar "index_buffer") in
+  let uniform_buffer = new MTLBuffer.t (view#get_object_ivar "uniform_buffer") in
+  let command_queue = new MTLCommandQueue.t (view#get_object_ivar "command_queue") in
+  let depth_stencil_state = new MTLDepthStencilState.t (view#get_object_ivar "depth_stencil_state") in
+  let pipeline_state = new MTLRenderPipelineState.t (view#get_object_ivar "pipeline_state") in
   let command_buffer = command_queue#command_buffer in
   let command_encoder = command_buffer#render_command_encoder_with_descriptor view#current_render_pass_descriptor in
   let seconds = mod_float (Unix.gettimeofday ()) 10000.0 in
@@ -177,12 +177,12 @@ let view =
   let color_attachment = color_attachments#object_at_indexed_subscript (Ctypes.Uintptr.of_int 0) in
   color_attachment#set_pixel_format 80;
   let pipeline_state = device#new_render_pipeline_state_with_descriptor_error pipeline_descriptor error in
-  ObjC.set_ivar result#get_id "vertex_buffer" (to_voidp vertex_buffer#get_id);
-  ObjC.set_ivar result#get_id "index_buffer" (to_voidp index_buffer#get_id);
-  ObjC.set_ivar result#get_id "uniform_buffer" (to_voidp uniform_buffer#get_id);
-  ObjC.set_ivar result#get_id "command_queue" (to_voidp command_queue#get_id);
-  ObjC.set_ivar result#get_id "depth_stencil_state" (to_voidp depth_stencil_state#get_id);
-  ObjC.set_ivar result#get_id "pipeline_state" (to_voidp pipeline_state#get_id);
+  result#set_object_ivar "vertex_buffer" (vertex_buffer :> ObjC.Object.t);
+  result#set_object_ivar "index_buffer" (index_buffer :> ObjC.Object.t);
+  result#set_object_ivar "uniform_buffer" (uniform_buffer :> ObjC.Object.t);
+  result#set_object_ivar "command_queue" (command_queue :> ObjC.Object.t);
+  result#set_object_ivar "depth_stencil_state" (depth_stencil_state :> ObjC.Object.t);
+  result#set_object_ivar "pipeline_state" (pipeline_state :> ObjC.Object.t);
   result#set_color_pixel_format 80;
   result#set_clear_color clear_color;
   result
