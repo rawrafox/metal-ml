@@ -32,6 +32,8 @@ module Implementation = struct
     let ns_array_init = ObjC.message_send "init" (returning ObjC.id)
     let ns_array_get_count = ObjC.message_send "count" (returning nsu_integer)
     let ns_array_set_count = ObjC.message_send "setCount:" (nsu_integer @-> returning void)
+    let ns_array_object_at_index = ObjC.message_send "objectAtIndex:" (nsu_integer @-> returning ObjC.id)
+    let ns_array_object_at_indexed_subscript = ObjC.message_send "objectAtIndexedSubscript:" (nsu_integer @-> returning ObjC.id)
 
     let ns_data_class = ObjC.get_class "NSData"
     let ns_data_init_with_bytes_length = ObjC.message_send "initWithBytes:length:" ((ptr void) @-> nsu_integer @-> returning ObjC.id)
@@ -75,6 +77,8 @@ module Implementation = struct
     inherit ns_object ptr
     method init = new ns_array (ns_array_init ptr)
     method count = ns_array_get_count ptr
+    method object_at_index index = new ns_object (ns_array_object_at_index ptr index)
+    method object_at_indexed_subscript index = new ns_object (ns_array_object_at_indexed_subscript ptr index)
   end and ns_coder (ptr: ObjC.id) = object (self)
     inherit ns_object ptr
   end and ns_data (ptr: ObjC.id) = object (self)

@@ -540,10 +540,8 @@ module Bridge
         case return_node.kind
         when "type"
           o.puts "let #{@parent_name.underscore}_#{name} = ObjC.message_send \"#{selector}\" (#{args}returning #{Bridge.type_lookup(return_node.type)})"
-        when "protocol"
+        when "protocol", "generic"
           o.puts "let #{@parent_name.underscore}_#{name} = ObjC.message_send \"#{selector}\" (#{args}returning ObjC.id)"
-        when "generic"
-          # Implement this
         else
           raise ArgumentError, "Unknown kind #{return_node.kind}"
         end
@@ -563,7 +561,7 @@ module Bridge
         when "protocol"
           o.puts("method #{name}#{ocaml_args} = new #{return_node.protocol.underscore} (#{@parent_name.underscore}_#{name} ptr#{ffi_args})")
         when "generic"
-          # Implement this
+          o.puts("method #{name}#{ocaml_args} = new #{return_node.generic.underscore} (#{@parent_name.underscore}_#{name} ptr#{ffi_args})")
         else
           raise ArgumentError, "Unknown kind #{return_node.kind}"
         end
